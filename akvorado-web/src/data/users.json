@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin",
+      "name": "Administrator",
+      "email": "admin@akvorado.local",
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "appName": "Akvorado",
+    "logoUrl": "/logo.png",
+    "colors": {
+      "primary": "#2563eb",
+      "secondary": "#4f46e5",
+      "gradientFrom": "#2563eb",
+      "gradientVia": "#4f46e5",
+      "gradientTo": "#6366f1"
+    }
+  }
+}
