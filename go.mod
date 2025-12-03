@@ -1,12 +1,12 @@
 module akvorado
 
-go 1.25
+go 1.25.3
 
 toolchain go1.25.4
 
 require (
 	github.com/ClickHouse/ch-go v0.69.0
-	github.com/ClickHouse/clickhouse-go/v2 v2.40.3
+	github.com/ClickHouse/clickhouse-go/v2 v2.41.0
 	github.com/alecthomas/chroma/v2 v2.20.0
 	github.com/benbjohnson/clock v1.3.5
 	github.com/bio-routing/bio-rd v0.1.10
@@ -156,7 +156,7 @@ require (
 	github.com/openconfig/grpctunnel v0.1.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/pascaldekloe/name v1.0.1 // indirect
-	github.com/paulmach/orb v0.11.1 // indirect
+	github.com/paulmach/orb v0.12.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
