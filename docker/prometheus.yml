@@ -1,0 +1,5 @@
+---
+global:
+  evaluation_interval: 30s
+scrape_configs:
+  # none: everything is done from alloy

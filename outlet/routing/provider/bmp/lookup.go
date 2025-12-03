@@ -1,0 +1,71 @@
+// SPDX-FileCopyrightText: 2022 Free Mobile
+// SPDX-License-Identifier: AGPL-3.0-only
+
+package bmp
+
+import (
+	"context"
+	"errors"
+	"net/netip"
+
+	"akvorado/outlet/routing/provider"
+)
+
+// LookupResult is the result of the Lookup() function.
+type LookupResult = provider.LookupResult
+
+var errNoRouteFound = errors.New("no route found")
+
+// Lookup lookups a route for the provided IP address. It favors the
+// provided next hop if provided. This is somewhat approximate because
+// we use the best route we have, while the exporter may not have this
+// best route available. The returned result should not be modified!
+// The last parameter, the agent, is ignored by this provider.
+func (p *Provider) Lookup(_ context.Context, ip, nh, _ netip.Addr) (LookupResult, error) {
+	if !p.config.CollectASNs && !p.config.CollectASPaths && !p.config.CollectCommunities {
+		return LookupResult{}, nil
+	}
+	if !p.active.Load() {
+		return LookupResult{}, nil
+	}
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	// Find the best route, preferring exact next hop match
+	var selectedRoute route
+	routeFound := false
+	for route := range p.rib.IterateRoutes(ip) {
+		if !routeFound {
+			selectedRoute = route
+			routeFound = true
+		}
+		if p.rib.nextHops.Get(route.nextHop) == nextHop(nh) {
+			// Exact match found, use it and don't search further
+			selectedRoute = route
+			break
+		}
+	}
+
+	if !routeFound {
+		return LookupResult{}, errNoRouteFound
+	}
+
+	attributes := p.rib.rtas.Get(selectedRoute.attributes)
+	// The next hop is updated from the rib in every case, because the user
+	// "opted in" for bmp as source if the lookup result is evaluated
+	nh = netip.Addr(p.rib.nextHops.Get(selectedRoute.nextHop))
+
+	// Prefix length is for IPv4-mapped IPv6 address.
+	plen := selectedRoute.prefixLen
+	if ip.Is4In6() {
+		plen = plen - 96
+	}
+	return LookupResult{
+		ASN:              attributes.asn,
+		ASPath:           attributes.asPath,
+		Communities:      attributes.communities,
+		LargeCommunities: attributes.largeCommunities,
+		NetMask:          plen,
+		NextHop:          nh,
+	}, nil
+}

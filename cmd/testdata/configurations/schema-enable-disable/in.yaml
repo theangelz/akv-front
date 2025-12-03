@@ -1,0 +1,11 @@
+---
+schema:
+  disabled:
+    - SrcCountry
+    - DstCountry
+  enabled:
+    - SrcMAC
+    - DstMAC
+  main-table-only:
+    - SrcMAC
+    - DstMAC

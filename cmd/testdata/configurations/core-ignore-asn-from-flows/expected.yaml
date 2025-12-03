@@ -1,0 +1,5 @@
+---
+paths:
+  outlet.0.core.asnproviders:
+    - routing
+    - geo-ip

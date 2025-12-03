@@ -1,0 +1,17 @@
+---
+paths:
+  outlet.0.routing:
+    provider:
+      type: bmp
+      listen: 127.0.0.1:1179
+      collectasns: true
+      collectaspaths: false
+      collectcommunities: true
+      keep: 1h0m0s
+      rds: []
+      receivebuffer: 0
+  outlet.0.core.asnproviders:
+    - flow
+    - routing
+  outlet.0.core.netproviders:
+    - routing

@@ -1,0 +1,18 @@
+---
+paths:
+  clickhouse.networksources.amazon:
+    url: https://ip-ranges.amazonaws.com/ip-ranges.json
+    tls:
+      enable: false
+      skipverify: false
+      cafile: ""
+      certfile: ""
+      keyfile: ""
+    method: GET
+    headers: {}
+    proxy: true
+    interval: 6h0m0s
+    timeout: 1m0s
+    transform: >-
+      (.prefixes + .ipv6_prefixes)[] |
+      { prefix: (.ip_prefix // .ipv6_prefix), tenant: "amazon", region: .region, role: .service | ascii_downcase }
