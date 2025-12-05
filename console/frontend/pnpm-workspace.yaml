@@ -1,4 +1,0 @@
-minimumReleaseAge: 4320
-
-patchedDependencies:
-  '@codemirror/view@6.38.4': patches/@codemirror__view@6.38.4.patch
